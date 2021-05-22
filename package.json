@@ -1,0 +1,20 @@
+{
+  "name": "multiplayer-platformer",
+  "version": "1.0.0",
+  "description": "a game i made",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Blank2275/multiplayer-platformer-lol.git"
+  },
+  "author": "Connor Reed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Blank2275/multiplayer-platformer-lol/issues"
+  },
+  "homepage": "https://github.com/Blank2275/multiplayer-platformer-lol#readme"
+}
