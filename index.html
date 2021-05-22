@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Multiplayer Platformer</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        #name {
+            height: 7%;
+            width: 25%;
+            background-color: rgb(136, 136, 136);
+            color: rgb(61, 61, 61);
+            font-size: 350%;
+        }
+
+        #main {
+            background-color: rgb(67, 197, 95);
+        }
+
+        body {
+            background-color: rgb(133, 192, 146);
+        }
+
+        #next {
+            width: 14%;
+            height: 8%;
+            position: relative;
+            left: 15%;
+            top: -1%;
+            background-color: red;
+        }
+    </style>
+
+    <input type="text" id="name" value="guest" onchange="changeName(event)">
+    <button id="next" onclick="next(event)">Next, too hard</button>
+
+    <script src="client.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
