@@ -50,8 +50,8 @@ io.on("connection", (socket) => {
     });
 });
 
-http.listen(8080, () => {
-    console.log("10.0.0.108:8080");
+http.listen(process.env.PORT, () => {
+    console.log("running");
 });
 
 setInterval(update, 1000 / SYNC_RATE);
