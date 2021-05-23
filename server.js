@@ -87,9 +87,14 @@ function generate_level(num_platforms, min_sets, max_sets){
         var biasX = biasXAmount * Math.cos(angle);
         var biasY = biasYAmount * Math.sin(angle);
         
+        var distanceMultiplier = 1.75;
+        startingDistanceMultiplier = 1.75;
+        var targetDistanceMultiplier = .6;
         for(var i = 0; i < num_platforms; i++){
-            x += random_range(-100, 100) + biasX;
-            y +=  random_range(-30, 30) + biasY;
+            distanceMultiplier -= (startingDistanceMultiplier - targetDistanceMultiplier) /  num_platforms;
+            
+            x += random_range(-100, 100) + biasX * distanceMultiplier;
+            y +=  random_range(-30, 30) + biasY * distanceMultiplier;
             
             let width = random_range(20, 160);
             let height = random_range( 15, 50);
