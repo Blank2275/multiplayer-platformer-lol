@@ -50,8 +50,8 @@ io.on("connection", (socket) => {
     });
 });
 
-http.listen(process.env.PORT, () => {
-    console.log("running");
+http.listen(process.env.PORT || 8080, () => {
+    console.log(`Port ${process.env.PORT || 8080}`);
 });
 
 setInterval(update, 1000 / SYNC_RATE);

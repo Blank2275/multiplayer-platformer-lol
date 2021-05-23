@@ -38,11 +38,20 @@
             top: -1%;
             background-color: red;
         }
+        #start-over{
+            width:8%;
+            height:8%;
+            position:relative;
+            left:16.5%;
+            top:-1%;
+            background-color: green;
+        }
     </style>
 
     <input type="text" id="name" value="guest" onchange="changeName(event)">
     <button id="next" onclick="next(event)">Next, too hard</button>
-
+    <button id = "start-over" onclick = "startOver(event)">Start Over</button>
+    
     <script src="client.js"></script>
     <script src="main.js"></script>
 </body>

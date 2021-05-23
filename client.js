@@ -21,6 +21,7 @@ socket.on("map", (level, checkpoints, gi) => {
     player.y = 10;
     player.startX = 10;
     player.startY = 10;
+    player.yv = 0;
     player.won = false;
     lv1 = level;
     checkpointslv1 = checkpoints;
@@ -29,6 +30,7 @@ socket.on("map", (level, checkpoints, gi) => {
 
 function win(){
     socket.emit("win");
+    player.yv = 0;
     score ++;
 }
 
@@ -39,4 +41,13 @@ function changeName(e){
 function next(e){
     e.preventDefault();
     socket.emit("win");
+}
+
+function startOver(e){
+    e.preventDefault();
+    player.startX = 10;
+    player.startY = 10;
+    player.x = 10;
+    player.y = 10;
+    player.yv = 0;
 }
