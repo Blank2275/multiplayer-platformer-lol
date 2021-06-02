@@ -1,8 +1,13 @@
-const SYNC_RATE = 48;
+const SYNC_RATE = 24;
+const STEPS = 5;
+var step = 1;
 
 setInterval(update, 1000 / SYNC_RATE);
 
+var playersLast = {};
 var players = {};
+var playersCurrent = {};
+
 var name = "guest";
 var score = 0;
 
@@ -13,7 +18,10 @@ function update(){
 var socket = io();
 
 socket.on("sync", (players_) => {
-    players = players_;
+    playersLast = playersCurrent;
+    playersCurrent = players_;
+    players = playersLast;
+    step = 1;
 });
 
 socket.on("map", (level, checkpoints, gi) => {
@@ -51,3 +59,28 @@ function startOver(e){
     player.y = 10;
     player.yv = 0;
 }
+
+setInterval(lerpPlayers, 1000 / SYNC_RATE / STEPS);
+
+function lerpPlayers(){
+    for(var key of Object.keys(playersLast)){
+        if(Object.keys(playersCurrent).includes(key)){
+            //x
+            var lastX = playersLast[key]["x"];
+            var currentX = playersCurrent[key]["x"];
+            players[key]["x"] = lerp(lastX, currentX, step * (1 / STEPS));
+
+            //y
+            var lastY = playersLast[key]["y"];
+            var currentY = playersCurrent[key]["y"];
+            players[key]["y"] = lerp(lastY, currentY, step * (1 / STEPS));
+        }
+    }
+    step += 1;
+}
+
+/*
+function lerp(a, b, x){
+    return a + (b - a) * x;
+}
+*/
