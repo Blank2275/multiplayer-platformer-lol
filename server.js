@@ -2,7 +2,7 @@ var app = require("express")();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
-var SYNC_RATE = 48;
+var SYNC_RATE = 24;
 
 const NUM_PLATFORMS = 5;
 const  MIN_SETS = 20;
