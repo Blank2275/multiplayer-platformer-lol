@@ -242,6 +242,21 @@ function drawPlayers(){
             var y = players[player_].y;
             fill("red");
             rect(screenWidth/ 2 - player.width / 2 + (x - player.cameraX), screenHeight / 2 + (y - player.cameraY), player.width, player.height);
+
+            //draw nametag
+
+            x = screenWidth / 2 + (x - player.cameraX);
+            y = screenHeight / 2 + (y - player.cameraY);
+
+            let name = players[player_]["name"];
+            let gid = players[player_]["gid"];
+            fill(0);
+            textSize(14);
+            let nameWidth = textWidth(name);
+            text(name, x - nameWidth / 2, y - 30);
+            textSize(12);
+            let idWidth = textWidth(gid);
+            text(gid, x - idWidth / 2, y - 15);
         }
     }
 }
