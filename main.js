@@ -141,12 +141,26 @@ class Player{
             this.y -= 1;
             this.jumps -= 1;
         }
+
+        //add particles
+        jumpParticles(this.x, this.y, this.width, this.height);
+        socket.emit("jump", this.x, this.y);
     }
+}
+
+function jumpParticles(x_, y_, width, height){
+    let x = x_ + width / 2;
+    let y = y_ + height;
+    let c = color(230);
+    let system = new ParticleSytem(10, x, y, 0, 1, 3, .5, 10, .5, c, 3)
+    particleSystems.push(system);
 }
 
 var player = new Player(10, 10);
 var screenWidth = 800;
 var screenHeight = 600;
+
+var particleSystems = [];
 
 var respawnAncor;
 var playerImg;
@@ -170,6 +184,7 @@ function draw(){
     drawCheckpoints(checkpointslv1);
     drawPlayers();
     drawScore();
+    updateParticles();
     player.update(lv1, checkpointslv1);
 
     if(keyIsDown(LEFT_ARROW)){
@@ -183,6 +198,15 @@ function draw(){
         player.jump(JUMP_FORCE);
     }
     */
+}
+
+function updateParticles(){
+    for(let system in particleSystems){
+        particleSystems[system].update();
+        if(particleSystems[system].particles.length === 0){
+            particleSystems.splice(system, 1);
+        }
+    }
 }
 
 function keyPressed(){
@@ -321,4 +345,53 @@ function lerp(a, b, x){
 
 function percent_through(v, min, max){
     return (v - min) / (max - min);
+}
+
+class ParticleSytem{
+    constructor(amount, x, y, xv, yv, Xrandomness, Yrandomness, lifespan, lifespanRandomness,color, size){
+        this.particles = [];
+        for(let i = 0; i < amount; i++){
+            let xv_ = xv + Math.random() * Xrandomness * 2 - Xrandomness;
+            let yv_ = yv + Math.random() * Yrandomness;
+            let lifespan_ = lifespan + Math.random() * lifespanRandomness;
+            this.particles.push(new Particle(x, y, xv_, yv_, lifespan_, color, size));
+        }
+    }
+    update(){
+        for(let particle in this.particles){
+            this.particles[particle].update();
+            if(this.particles[particle].decay()){
+                this.particles.splice(particle, 1);
+            }
+        }
+    }
+}
+class Particle{
+    constructor(x, y, xv, yv, lifespan, color, size){
+        this.x = x;
+        this.y = y;
+        this.xv = xv;
+        this.yv = yv;
+        this.lifespan = lifespan;
+        this.color = color;
+        this.framesleft = lifespan;
+        this.size = size;
+    }
+    update(){
+        this.x += this.xv;
+        this.y += this.yv;
+        this.framesleft -= 1;
+        this.display();
+    }
+    decay(){
+        if(this.framesleft <= 0)
+            return true;
+        return false;
+    }
+    display(){
+        fill(this.color);
+        let x = screenWidth/ 2 - player.width / 2 + (this.x - player.cameraX);
+        let y = screenHeight / 2 + (this.y - player.cameraY)
+        rect(x, y, this.size, this.size);
+    }
 }

@@ -80,6 +80,16 @@ io.on("connection", (socket) => {
             socket.emit("map", worlds[gid]["level"], worlds[gid]["checkpoints"], worlds[gid]["goldenIndex"]);
         }
     });
+    socket.on("jump", (x, y) => {
+        console.log("jump");
+        var worldFrom = players[socket.id]["world"];
+        for(var player of Object.keys(players)){
+            let world = players[player]["world"];
+            if(world == worldFrom){
+                io.to(player).emit("jump", x, y);
+            }
+        }
+    });
 });
 
 http.listen(process.env.PORT || 8080, () => {
@@ -87,6 +97,15 @@ http.listen(process.env.PORT || 8080, () => {
 });
 
 setInterval(update, 1000 / SYNC_RATE);
+
+function get_players_in_world(world_){
+    var worldPlayers = {};
+    for(var player of Object.keys(players)){
+        let world = players[player]["world"];
+        worldPlayers[world][player] = players[player];
+    }
+    return worldPlayers;
+}
 
 function generate_game_id(){
     var result = generate_unchecked_game_id();

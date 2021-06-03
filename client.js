@@ -38,6 +38,10 @@ socket.on("map", (level, checkpoints, gi) => {
     goldenIndex = gi;
 });
 
+socket.on("jump", (x, y) => {
+    jumpParticles(x, y, player.width, player.height);
+});
+
 function win(){
     socket.emit("win");
     player.yv = 0;
