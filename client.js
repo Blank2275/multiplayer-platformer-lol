@@ -38,7 +38,7 @@ socket.on("map", (level, checkpoints, gi) => {
     goldenIndex = gi;
 });
 
-socket.on("jump", (x, y) => {
+socket.on("particles", (x, y) => {
     jumpParticles(x, y, player.width, player.height);
 });
 

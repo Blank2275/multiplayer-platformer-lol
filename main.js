@@ -84,6 +84,12 @@ class Player{
             var bottomCollision = lineRect(x1, y1, x2, y2, rx, ry, rw, rh);
             //resolve collisions
             if(topCollision){
+                //add particles
+                if(this.yv > 14){
+                    jumpParticles(this.x, this.y, this.width, this.height);
+                    socket.emit("particles", this.x, this.y);
+                }
+
                 this.y = platform[1] - this.height + 0.01;
                 this.yv = 0;
                 this.grounded = index;
@@ -140,11 +146,10 @@ class Player{
             this.y += this.yv;
             this.y -= 1;
             this.jumps -= 1;
+            //add particles
+            jumpParticles(this.x, this.y, this.width, this.height);
+            socket.emit("particles", this.x, this.y);
         }
-
-        //add particles
-        jumpParticles(this.x, this.y, this.width, this.height);
-        socket.emit("jump", this.x, this.y);
     }
 }
 
@@ -152,7 +157,7 @@ function jumpParticles(x_, y_, width, height){
     let x = x_ + width / 2;
     let y = y_ + height;
     let c = color(230);
-    let system = new ParticleSytem(10, x, y, 0, 1, 3, .5, 10, .5, c, 3)
+    let system = new ParticleSytem(10, x, y, 0, 1, 3, .5, 10, .5, c, 3, 0)
     particleSystems.push(system);
 }
 
@@ -348,13 +353,13 @@ function percent_through(v, min, max){
 }
 
 class ParticleSytem{
-    constructor(amount, x, y, xv, yv, Xrandomness, Yrandomness, lifespan, lifespanRandomness,color, size){
+    constructor(amount, x, y, xv, yv, Xrandomness, Yrandomness, lifespan, lifespanRandomness,color, beginSize, endSize){
         this.particles = [];
         for(let i = 0; i < amount; i++){
             let xv_ = xv + Math.random() * Xrandomness * 2 - Xrandomness;
             let yv_ = yv + Math.random() * Yrandomness;
             let lifespan_ = lifespan + Math.random() * lifespanRandomness;
-            this.particles.push(new Particle(x, y, xv_, yv_, lifespan_, color, size));
+            this.particles.push(new Particle(x, y, xv_, yv_, lifespan_, color, beginSize, endSize));
         }
     }
     update(){
@@ -367,7 +372,7 @@ class ParticleSytem{
     }
 }
 class Particle{
-    constructor(x, y, xv, yv, lifespan, color, size){
+    constructor(x, y, xv, yv, lifespan, color, beginSize, endSize){
         this.x = x;
         this.y = y;
         this.xv = xv;
@@ -375,13 +380,16 @@ class Particle{
         this.lifespan = lifespan;
         this.color = color;
         this.framesleft = lifespan;
-        this.size = size;
+        this.size = beginSize;
+        this.beginSize = beginSize;
+        this.endSize = endSize;
     }
     update(){
         this.x += this.xv;
         this.y += this.yv;
         this.framesleft -= 1;
         this.display();
+        this.size -= (this.beginSize - this.endSize) / this.lifespan;
     }
     decay(){
         if(this.framesleft <= 0)

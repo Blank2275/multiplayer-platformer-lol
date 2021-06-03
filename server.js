@@ -80,12 +80,12 @@ io.on("connection", (socket) => {
             socket.emit("map", worlds[gid]["level"], worlds[gid]["checkpoints"], worlds[gid]["goldenIndex"]);
         }
     });
-    socket.on("jump", (x, y) => {
+    socket.on("particles", (x, y) => {
         var worldFrom = players[socket.id]["world"];
         for(var player of Object.keys(players)){
             let world = players[player]["world"];
             if(world == worldFrom){
-                io.to(player).emit("jump", x, y);
+                io.to(player).emit("particles", x, y);
             }
         }
     });
