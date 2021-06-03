@@ -104,6 +104,17 @@
             left:80%;
             border-radius: 10px;
         }
+        #room-info{
+            position:relative;
+            top:23%;
+            text-align:center;
+        }
+        #instructions{
+            position:relative;
+            left:77%;
+            top:-60%;
+            max-width: 20%;
+        }
     </style>
     
     <div id = "ui">
@@ -113,6 +124,12 @@
         <p id = "gid">gid</p>
         <input type = "text" id = "joinCode" value = "1">
         <button id = "joinSubmit" onclick = "joinWorld(event)">Join</button>
+        <p id = "room-info">Public room is 1, top right is your game-id, enter it in and join to create a private room, if someone else types in your game-id, they go to your room</p>
+        <p id = "instructions">Colored rectangles are platforms to jump around on, purple circles set 
+            your spawn when you touch them, touch the yellow platform with a green outline to get a 
+            point then a new computer generated map will appear. This is an online multiplayer game, you 
+            compete to find the target first. Changing your name is the top item in the menu. The red 
+            button generates a new map, the green one resets you to spawn.</p>
     </div>
     <button id = "menu" onclick = "toggleMenu(event)">menu</button>
 
