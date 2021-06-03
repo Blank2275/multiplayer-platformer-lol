@@ -221,15 +221,22 @@ function keyPressed(){
 }
 
 function drawScore(){
+    fill(100, 100, 100, 0.5);
     x = 30;
     y = 30;
     fill("black");
+    //keep track of how wide box needs to be
+    var maxWidth = 0;
     for(let player of Object.keys(players)){
         let name = players[player]["name"];
         let score = players[player]["score"];
         text(`${name} has a score of ${score}`, x, y);
+        let w = textWidth(`${name} has a score of ${score}`);
+        maxWidth = Math.max(maxWidth, w);
         y += 15; 
     }
+    fill(color("rgba(30%, 30%, 30%, 0.3)"));
+    rect(0, 0, maxWidth + 30 + x, y + 15);
 }
 
 function drawMap(m){
