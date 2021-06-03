@@ -229,11 +229,24 @@ function drawMap(m){
         var base = 40;
         var x = platform[0];
         var y = platform[1];
+        /*
         let r = (255 - base - 30) * percent_through(x, minX - 1, maxX + 1);
         let g = (255 - base - 90) * percent_through(y, minY - 1, maxY + 1);
         let b = (255 - base) * percent_through((maxX - x), minX - 1, maxX + 1);
 
         fill(r + base, g + base, b + base);
+        */
+        if(x > 0 && y < 550){
+            fill(210, 31, 219);
+        } else if (x > 0 && y > 550){
+            fill(25, 80, 230);
+        } else if(x < 0 && y > 550){
+            fill(213, 219, 31);
+        } else if(x < 0 && y < 550){
+            fill(232, 58, 58);
+        } else{
+            fill(230);
+        }
         index += 1;
         if(index == goldenIndex){
             fill("yellow");
