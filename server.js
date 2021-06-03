@@ -30,6 +30,18 @@ app.get("/main.js", (req, res) => {
     res.sendFile(__dirname + "/main.js");
 });
 
+app.get("/Images/RespawnAncor.png", (req, res) => {
+    res.sendFile(__dirname + "/Images/RespawnAncor.png")
+});
+
+app.get("/Images/Player.png", (req, res) => {
+    res.sendFile(__dirname + "/Images/Player.png")
+});
+
+app.get("/Images/Oponent.png", (req, res) => {
+    res.sendFile(__dirname + "/Images/Oponent.png")
+});
+
 io.on("connection", (socket) => {
     players[socket.id] = {"x": 0, "y": 0, "name": "guest", "score": 0, "world": "1", "gid": generate_game_id()};
     socket.emit("map", worlds["1"]["level"], worlds["1"]["checkpoints"], worlds["1"]["goldenIndex"]);

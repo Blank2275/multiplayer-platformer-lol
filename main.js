@@ -129,7 +129,7 @@ class Player{
     }
     display(){
         fill("green");
-        rect(screenWidth/ 2 - this.width / 2 + (this.x - this.cameraX), screenHeight / 2 + (this.y - this.cameraY), this.width, this.height);
+        image(playerImg, screenWidth/ 2 - this.width / 2 + (this.x - this.cameraX), screenHeight / 2 + (this.y - this.cameraY), this.width, this.height);
     }
     move(amount){
         this.x += amount;
@@ -147,6 +147,16 @@ class Player{
 var player = new Player(10, 10);
 var screenWidth = 800;
 var screenHeight = 600;
+
+var respawnAncor;
+var playerImg;
+var oponentImg;
+function preload(){
+    respawnAncor = loadImage("Images/RespawnAncor.png");
+    playerImg = loadImage("Images/Player.png");
+    oponentImg = loadImage("Images/Oponent.png");
+}
+
 function setup(){
     createCanvas(windowWidth / 1.15, windowHeight / 1.15);
     screenWidth = windowWidth / 1.15;
@@ -241,7 +251,7 @@ function drawPlayers(){
             var x = players[player_].x;
             var y = players[player_].y;
             fill("red");
-            rect(screenWidth/ 2 - player.width / 2 + (x - player.cameraX), screenHeight / 2 + (y - player.cameraY), player.width, player.height);
+            image(oponentImg, screenWidth/ 2 - player.width / 2 + (x - player.cameraX), screenHeight / 2 + (y - player.cameraY), player.width, player.height);
 
             //draw nametag
 
@@ -250,13 +260,17 @@ function drawPlayers(){
 
             let name = players[player_]["name"];
             let gid = players[player_]["gid"];
+            let score = players[player_]["score"];
             fill(0);
-            textSize(14);
+            textSize(12);
             let nameWidth = textWidth(name);
-            text(name, x - nameWidth / 2, y - 30);
+            text(name, x - nameWidth / 2, y - 35);
             textSize(12);
             let idWidth = textWidth(gid);
-            text(gid, x - idWidth / 2, y - 15);
+            text(gid, x - idWidth / 2, y - 20);
+            textSize(12);
+            let scoreWidth = textWidth(score);
+            text(score, x - scoreWidth / 2, y - 5);
         }
     }
 }
@@ -264,7 +278,7 @@ function drawPlayers(){
 function drawCheckpoints(checkpoints){
     for(let checkpoint of checkpoints){
         fill(130, 20, 190);
-        ellipse(checkpoint[0] - CHECKPOINT_SIZE / 2 - player.cameraX + screenWidth / 2, checkpoint[1] - CHECKPOINT_SIZE / 2  - player.cameraY + screenHeight / 2, CHECKPOINT_SIZE, CHECKPOINT_SIZE);
+        image(respawnAncor ,checkpoint[0] - CHECKPOINT_SIZE / 2 - player.cameraX + screenWidth / 2, checkpoint[1] - CHECKPOINT_SIZE / 2  - player.cameraY + screenHeight / 2, CHECKPOINT_SIZE, CHECKPOINT_SIZE);
     }
 }
 
