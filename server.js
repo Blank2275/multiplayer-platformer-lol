@@ -64,7 +64,7 @@ io.on("connection", (socket) => {
             if(players[socket.id]["world"] == players[player]["world"]){
                 players[player]["x"] = 10;
                 players[player]["y"] = 10;
-                io.emit("map",worlds["1"]["level"], worlds["1"]["checkpoints"], worlds["1"]["goldenIndex"]);
+                io.to(player).emit("map",worlds[world]["level"], worlds[world]["checkpoints"], worlds[world]["goldenIndex"]);
             }
         }
     });
@@ -81,7 +81,6 @@ io.on("connection", (socket) => {
         }
     });
     socket.on("jump", (x, y) => {
-        console.log("jump");
         var worldFrom = players[socket.id]["world"];
         for(var player of Object.keys(players)){
             let world = players[player]["world"];
