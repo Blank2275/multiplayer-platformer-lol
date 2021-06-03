@@ -15,11 +15,18 @@
         }
 
         #name {
-            height: 7%;
-            width: 25%;
+            position:relative;
+            height: 10%;
+            width: 60%;
+            top:2%;
+            margin-left:15%;
+            margin-right:15%;
             background-color: rgb(136, 136, 136);
             color: rgb(61, 61, 61);
             font-size: 350%;
+            border-radius: 10px;
+            display:inherit;
+            pointer-events: inherit;
         }
 
         #main {
@@ -31,27 +38,84 @@
         }
 
         #next {
-            width: 14%;
-            height: 8%;
+            width: 60%;
+            height: 12%;
+            margin-left: 15%;
+            margin-right: 15%;
             position: relative;
-            left: 15%;
-            top: -1%;
-            background-color: red;
+            top: 13%;
+            background-color: rgb(173, 143, 143);
+            border-radius: 10px;
+            display:inherit;
+            pointer-events: inherit;
         }
         #start-over{
-            width:8%;
-            height:8%;
+            width: 60%;
+            height: 10%;
+            position: relative;
+            top: 28%;
+            margin-left: 15%;
+            margin-right: 15%;
+            background-color: rgb(145, 180, 142);
+            border-radius: 10px;
+            display:inherit;
+            pointer-events: inherit;
+        }
+        #ui{
+            width:80%;
+            height:80%;
+            margin:10%;
+            margin-top: 5%;
+            background-color: rgb(189, 169, 116);
+            display:none;
+            pointer-events: none;
+            position:absolute;
+            left:0;
+            top:0;
+        }
+        #menu{
+            background-color:rgb(189, 169, 116);
+        }
+        #gid{
             position:relative;
-            left:16.5%;
-            top:-1%;
-            background-color: green;
+            left:93%;
+            top:-36%;
+        }
+        #joinCode{
+            position:relative;
+            height: 10%;
+            width: 60%;
+            top:30%;
+            margin-left:15%;
+            margin-right:15%;
+            background-color: rgb(136, 136, 136);
+            color: rgb(61, 61, 61);
+            font-size: 350%;
+            border-radius: 10px;
+            display:inherit;
+            pointer-events: inherit;
+        }
+        #joinSubmit{
+            position:relative;
+            height:10%;
+            width:18%;
+            background-color: rgb(136, 136, 136);
+            top:20%;
+            left:80%;
+            border-radius: 10px;
         }
     </style>
-
-    <input type="text" id="name" value="guest" onchange="changeName(event)">
-    <button id="next" onclick="next(event)">Next, too hard</button>
-    <button id = "start-over" onclick = "startOver(event)">Start Over</button>
     
+    <div id = "ui">
+        <input type="text" id="name" value="guest" onchange="changeName(event)">
+        <button id="next" onclick="next(event)">Next, too hard</button>
+        <button id = "start-over" onclick = "startOver(event)">Start Over</button>
+        <p id = "gid">gid</p>
+        <input type = "text" id = "joinCode" value = "1">
+        <button id = "joinSubmit" onclick = "joinWorld(event)">Join</button>
+    </div>
+    <button id = "menu" onclick = "toggleMenu(event)">menu</button>
+
     <script src="client.js"></script>
     <script src="main.js"></script>
 </body>

@@ -4,6 +4,8 @@ var io = require("socket.io")(http);
 
 var SYNC_RATE = 24;
 
+var usedIds = [];
+
 const NUM_PLATFORMS = 5;
 const  MIN_SETS = 20;
 const MAX_SETS = 30;
@@ -11,6 +13,8 @@ const MAX_SETS = 30;
 var level = generate_level(NUM_PLATFORMS, MIN_SETS, MAX_SETS);
 var checkpoints = generate_checkpoints(level);
 var goldenIndex = Math.floor(Math.random() * (level.length - 1));
+
+var worlds = {"1": {"level": level, "checkpoints": checkpoints, "goldenIndex": goldenIndex}};
 
 var players = {};
 
@@ -27,8 +31,8 @@ app.get("/main.js", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-    players[socket.id] = {"x": 0, "y": 0, "name": "guest", "score": 0};
-    socket.emit("map", level, checkpoints, goldenIndex);
+    players[socket.id] = {"x": 0, "y": 0, "name": "guest", "score": 0, "world": "1", "gid": generate_game_id()};
+    socket.emit("map", worlds["1"]["level"], worlds["1"]["checkpoints"], worlds["1"]["goldenIndex"]);
     socket.on("sync", (x, y, name, score) => {
         players[socket.id]["x"] = x;
         players[socket.id]["y"] = y;
@@ -39,13 +43,29 @@ io.on("connection", (socket) => {
         delete players[socket.id];
     });
     socket.on("win", () => {
+        level = generate_level(NUM_PLATFORMS, MIN_SETS, MAX_SETS);
+        checkpoints = generate_checkpoints(level);
+        goldenIndex = Math.floor(Math.random() * (level.length - 1));
+        let world = players[socket.id]["world"];
+        worlds[world] = {"level": level, "checkpoints": checkpoints, "goldenIndex": goldenIndex};
         for(let player of Object.keys(players)){
-            players[player]["x"] = 10;
-            players[player]["y"] = 10;
-            level = generate_level(NUM_PLATFORMS, MIN_SETS, MAX_SETS);
-            checkpoints = generate_checkpoints(level);
-            goldenIndex = Math.floor(Math.random() * (level.length - 1));
-            io.emit("map", level, checkpoints, goldenIndex);
+            if(players[socket.id]["world"] == players[player]["world"]){
+                players[player]["x"] = 10;
+                players[player]["y"] = 10;
+                io.emit("map",worlds["1"]["level"], worlds["1"]["checkpoints"], worlds["1"]["goldenIndex"]);
+            }
+        }
+    });
+    socket.on("join", (gid) => {
+        if(gid == players[socket.id]["gid"] && !Object.keys(worlds).includes(gid)){
+            let level_ = generate_level(NUM_PLATFORMS, MIN_SETS, MAX_SETS);
+            let checkpoints_ = generate_checkpoints(level);
+            let goldenIndex_ = Math.floor(Math.random() * (level.length - 1));
+            worlds[gid] = {"level": level, "checkpoints": checkpoints, "goldenIndex": goldenIndex};
+        }
+        if(Object.keys(worlds).includes(gid)){
+            players[socket.id]["world"] = gid;
+            socket.emit("map", worlds[gid]["level"], worlds[gid]["checkpoints"], worlds[gid]["goldenIndex"]);
         }
     });
 });
@@ -56,8 +76,36 @@ http.listen(process.env.PORT || 8080, () => {
 
 setInterval(update, 1000 / SYNC_RATE);
 
+function generate_game_id(){
+    var result = generate_unchecked_game_id();
+    while(usedIds.includes(result)){
+        result = generate_unchecked_game_id();
+    }
+    return result;
+}
+function generate_unchecked_game_id(){
+    var chars = "abcdefghijklmnopqrstuvwxyz123456789".split("");
+    var l1 = chars[Math.floor(Math.random() * chars.length)];
+    var l2 = chars[Math.floor(Math.random() * chars.length)];
+    var l3 = chars[Math.floor(Math.random() * chars.length)];
+    var l4 = chars[Math.floor(Math.random() * chars.length)];
+    var result = `${l1}${l2}${l3}${l4}`;
+    return result;
+}
+
 function update(){
-    io.emit("sync", players);
+    //io.emit("sync", players);
+    var worldPlayers = {};
+    for(var player of Object.keys(players)){
+        let world = players[player]["world"];
+        if(!worldPlayers[world])
+            worldPlayers[world] = {};
+        worldPlayers[world][player] = players[player];
+    }
+    for(var player of Object.keys(players)){
+        let world = players[player]["world"];
+        io.to(player).emit("sync", worldPlayers[world]);
+    }
 }
 
 function generate_checkpoints(level_){

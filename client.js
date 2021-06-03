@@ -2,6 +2,8 @@ const SYNC_RATE = 24;
 const STEPS = 5;
 var step = 1;
 
+var showmenu = false;
+
 setInterval(update, 1000 / SYNC_RATE);
 
 var playersLast = {};
@@ -84,3 +86,26 @@ function lerp(a, b, x){
     return a + (b - a) * x;
 }
 */
+
+function toggleMenu(e){
+    e.preventDefault();
+
+    document.getElementById("gid").innerHTML = players[socket.id]["gid"];
+    showmenu = !showmenu;
+
+    if(showmenu){
+        document.getElementById("ui").style.display = "block";
+        document.getElementById("ui").style.pointerEvents = "all";
+        return;
+    }
+    document.getElementById("ui").style.display = "none";
+    document.getElementById("ui").style.pointerEvents = "none";
+}
+
+function joinWorld(e){
+    e.preventDefault();
+    let value = document.getElementById("joinCode").value;
+    let gid = players[socket.id]["gid"];
+
+    socket.emit("join", value);
+}
