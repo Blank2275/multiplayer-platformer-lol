@@ -89,6 +89,15 @@ io.on("connection", (socket) => {
             }
         }
     });
+    socket.on("chat", (message) => {
+        var worldFrom = players[socket.id]["world"];
+        for(var player of Object.keys(players)){
+            let world = players[player]["world"];
+            if(world == worldFrom){
+                io.to(player).emit("chat", [players[socket.id]["name"], message]);
+            }
+        }        
+    });
 });
 
 http.listen(process.env.PORT || 8080, () => {

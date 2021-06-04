@@ -190,6 +190,7 @@ function draw(){
     drawPlayers();
     drawScore();
     updateParticles();
+    drawChat();
     player.update(lv1, checkpointslv1);
 
     if(keyIsDown(LEFT_ARROW)){
@@ -217,6 +218,23 @@ function updateParticles(){
 function keyPressed(){
     if(keyCode == UP_ARROW){
         player.jump(JUMP_FORCE);
+    }
+}
+
+function drawChat(){
+    var displayDepth = 5;
+    displayDepth = Math.min(displayDepth, messages.length);
+    var gap = 30;
+    var height = gap * displayDepth;
+
+    var x = 30;
+    var y = windowHeight / 1.15 - height - 120;
+    fill(0);
+    for(let message of messages){
+        let text_ = `[${message[0]}] ${message[1]}`;
+        textSize(24);
+        text(text_, x, y)
+        y += gap;
     }
 }
 

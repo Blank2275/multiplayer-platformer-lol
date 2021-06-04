@@ -2,6 +2,10 @@ const SYNC_RATE = 24;
 const STEPS = 5;
 var step = 1;
 
+var messages = [];
+var maxMessages = 6;
+var chatDuration = 12000;
+
 var showmenu = false;
 
 setInterval(update, 1000 / SYNC_RATE);
@@ -36,6 +40,13 @@ socket.on("map", (level, checkpoints, gi) => {
     lv1 = level;
     checkpointslv1 = checkpoints;
     goldenIndex = gi;
+});
+
+socket.on("chat", (message) => {
+    messages.push(message);
+    if(messages.length > maxMessages)
+        messages.shift();
+    setTimeout(hideChat, chatDuration);
 });
 
 socket.on("particles", (x, y) => {
@@ -112,4 +123,14 @@ function joinWorld(e){
     let gid = players[socket.id]["gid"];
 
     socket.emit("join", value);
+}
+
+function chat(e){
+    e.preventDefault();
+    var message = document.getElementById("chat-input").value;
+    socket.emit("chat", message);
+}
+
+function hideChat(){
+    messages.splice(messages.length - 1, 1);
 }

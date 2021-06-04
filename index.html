@@ -115,6 +115,31 @@
             top:-60%;
             max-width: 20%;
         }
+        #chat{
+            position:absolute;
+            left:5%;
+            top:89%;
+            height:6%;
+            width:80%;
+        }
+        #chat-input{
+            position:relative;
+            width:75%;
+            height:90%;
+            top:5%;
+            background-color:rgba(0,0,0,0.2);
+            border:3px solid black;
+            color:rgba(0,0,0,0.5);
+            font-size:250%;
+        }
+        #chat-submit{
+            position:relative;
+            width:20%;
+            height:150%;
+            top:25%;
+            background-color: rgba(0,0,0,0.5);
+            font-size:350%;
+        }
     </style>
     
     <div id = "ui">
@@ -131,6 +156,10 @@
             compete to find the target first. Changing your name is the top item in the menu. The red 
             button generates a new map, the green one resets you to spawn.</p>
     </div>
+    <form id = "chat">
+        <input type = "text" id = "chat-input">
+        <button type = "submit" id = "chat-submit" onclick = "chat(event)">Post</button>
+    </form>
     <button id = "menu" onclick = "toggleMenu(event)">menu</button>
 
     <script src="client.js"></script>
