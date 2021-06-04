@@ -57,6 +57,7 @@ function win(){
     socket.emit("win");
     player.yv = 0;
     score ++;
+    socket.emit("chat", ` scores 1 point for a total of ${score} points`)
 }
 
 function changeName(e){
@@ -66,6 +67,7 @@ function changeName(e){
 function next(e){
     e.preventDefault();
     socket.emit("win");
+    socket.emit("chat", "skipped level, no change of score");
 }
 
 function startOver(e){
