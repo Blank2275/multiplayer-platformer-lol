@@ -295,7 +295,7 @@ function drawMap(m){
         } else if (x > 0 && y > 550){
             fill(25, 80, 230);
         } else if(x < 0 && y > 550){
-            fill(213, 219, 31);
+            fill(3, 252, 186);//
         } else if(x < 0 && y < 550){
             fill(232, 58, 58);
         } else{
